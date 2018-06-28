@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 const personenRoutes = require('./routes/personen')
 const mannschaftRoutes = require('./routes/mannschaft');
@@ -10,17 +11,21 @@ const terminRoutes = require('./routes/termin');
 const terminstatusRoutes = require('./routes/terminstatus');
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-//Optionen der Verbindung
-const mongoOptions =
-{
-    db: {safe: true},
-    server: {
-        socketOptions: {
-            keepAlive: 1
-        }
-    }
-};
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "PUT, POST, DELETE, GET");
+    return res.status(200).json({});
+  }
+  next();
+});
 
 var mongoDB = 'mongodb://127.0.0.1:27017';
 mongoose.connect(mongoDB);
@@ -43,5 +48,19 @@ app.use('/mannschaftzuordnung', mannschaftzuordnungRoutes);
 app.use('/termin', terminRoutes);
 app.use('/terminstatus', terminstatusRoutes);
 
+app.use((req, res, next) => {
+    const error = new Error("Not found");
+    error.status = 404;
+    next(error);
+  });
+  
+  app.use((error, req, res, next) => {
+    res.status(error.status || 500);
+    res.json({
+      error: {
+        message: error.message
+      }
+    });
+  });
 
 module.exports = app;
