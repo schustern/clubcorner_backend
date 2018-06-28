@@ -48,6 +48,8 @@ app.use('/mannschaftzuordnung', mannschaftzuordnungRoutes);
 app.use('/termin', terminRoutes);
 app.use('/terminstatus', terminstatusRoutes);
 
+
+
 app.use((req, res, next) => {
     const error = new Error("Not found");
     error.status = 404;
