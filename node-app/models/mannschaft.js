@@ -13,6 +13,7 @@ const MannschaftSchema = new Schema(
         mannschaftsgrad: {type: int},
         name: {type: String, max: 100, required: true},
         saison: {type: String, max: 100, required: true},
+        geschlecht: { type: boolean, required: true }
     }
 );
 

@@ -5,12 +5,11 @@ const jwt = require("jsonwebtoken");
 
 
 exports.personen_get = (req, res, next) => {
-    res.status(200).json({
-        message: 'Handling GET requests to /personen'
-    });
+    Personen.find()
 };
 
 exports.personen_signup = (req, res, next) => {
+  console.log(req.file);
     Personen.find({ email: req.body.email })
       .exec()
       .then(user => {
@@ -25,15 +24,26 @@ exports.personen_signup = (req, res, next) => {
                 error: err
               });
             } else {
-              const user = new Personen({
-                _id: new mongoose.Types.ObjectId(),
-                vorname: req.body.vorname,
-                nachname: req.body.nachname,
-                email: req.body.email,
-                password: hash
-              });
-              user
-                .save()
+              var user = null;
+              if (req.file != null) {
+                user = new Personen({
+                  _id: new mongoose.Types.ObjectId(),
+                  vorname: req.body.vorname,
+                  nachname: req.body.nachname,
+                  email: req.body.email,
+                  password: hash,
+                  personenBild: req.file.path
+                });
+              } else {
+                user = new Personen({
+                  _id: new mongoose.Types.ObjectId(),
+                  vorname: req.body.vorname,
+                  nachname: req.body.nachname,
+                  email: req.body.email,
+                  password: hash
+                });
+              };
+              user.save()
                 .then(result => {
                   console.log(result);
                   res.status(201).json({
@@ -46,7 +56,7 @@ exports.personen_signup = (req, res, next) => {
                     error: err
                   });
                 });
-            }
+            };
           });
         }
       });

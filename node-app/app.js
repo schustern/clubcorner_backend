@@ -11,6 +11,8 @@ const terminRoutes = require('./routes/termin');
 const terminstatusRoutes = require('./routes/terminstatus');
 
 const app = express();
+app.use(morgan("dev"));
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -37,11 +39,12 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// Routes 
 app.use('/personen', personenRoutes);
 app.use('/mannschaft', mannschaftRoutes);
 app.use('/mannschaftzuordnung', mannschaftzuordnungRoutes);

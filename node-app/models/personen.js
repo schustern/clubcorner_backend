@@ -16,7 +16,8 @@ const PersonenSchema = new Schema(
             max: 100,
             unique: true, 
             match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-    }
+    },
+    personenBild: { type: String }
     }
 );
 
