@@ -36,7 +36,8 @@ router.get("/", personenController.personen_get);
 
 router.post("/login", personenController.personen_login);
 
-router.post("/signup", upload.single('personenBild'), personenController.personen_signup);
+router.post("/signup", personenController.personen_signup);
+//router.post("/signup", upload.single('personenBild'), personenController.personen_signup);
 
 router.delete("/:userID", checkAuth, personenController.personen_delete);
 

@@ -25,24 +25,34 @@ exports.personen_signup = (req, res, next) => {
             });
           } else {
             var user = null;
-            if (req.file != null) {
-              user = new Personen({
-                _id: new mongoose.Types.ObjectId(),
-                vorname: req.body.vorname,
-                nachname: req.body.nachname,
-                email: req.body.email,
-                password: hash,
-                personenBild: req.file.path
-              });
-            } else {
-              user = new Personen({
-                _id: new mongoose.Types.ObjectId(),
-                vorname: req.body.vorname,
-                nachname: req.body.nachname,
-                email: req.body.email,
-                password: hash
-              });
-            };
+
+            //Falls eine Bild-Datei dabei ist
+            // if (req.file != null) {
+            //   user = new Personen({
+            //     _id: new mongoose.Types.ObjectId(),
+            //     vorname: req.body.vorname,
+            //     nachname: req.body.nachname,
+            //     email: req.body.email,
+            //     password: hash,
+            //     personenBild: req.file.path
+            //   });
+            // } else {
+            //   user = new Personen({
+            //     _id: new mongoose.Types.ObjectId(),
+            //     vorname: req.body.vorname,
+            //     nachname: req.body.nachname,
+            //     email: req.body.email,
+            //     password: hash
+            //   });
+            // };
+
+            user = new Personen({
+              _id: new mongoose.Types.ObjectId(),
+              vorname: req.body.vorname,
+              nachname: req.body.nachname,
+              email: req.body.email,
+              password: hash
+            });
             user.save()
               .then(result => {
                 console.log(result);

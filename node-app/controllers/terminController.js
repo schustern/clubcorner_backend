@@ -5,23 +5,49 @@ const Terminstatus = require("../models/terminstatus");
 exports.create = (req, res, next) => {
 
     //Falls wiederholend findet der Termin alle 7 Tage erneut statt
-    var times = 1;
+    var times = 0;
     if (req.body.ist_wiederholend) {
         const span = req.body.enddatum.now() - req.body.datum.now();
         times = span / 604800000;
-        const timesRounded = Math.floor(times);
     }
+    const timesRounded = Math.floor(times);
+    var termin = new Termin({
+        _id: new mongoose.Types.ObjectId(),
+        ort: req.body.ort,
+        datum: req.body.datum,
+        mannschafts_ID: req.body.mannschafts_ID,
+        enddatum: req.body.enddatum,
+        gegner: req.body.gegner,
+        dauer: req.body.dauer
+    });
+    termin.save()
+        .then(result => {
+            console.log(result);
+            res.status(201).json({
+                message: "Termin created"
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+
+        //Falls ein wiederholender Termin vorliegt
+        const ersterTerminID = termin._id.toString();
     for (var i = 0; i < timesRounded; i++) {
-        var termin = new Termin({
+        var wiederholungstermin = new Termin({
             _id: new mongoose.Types.ObjectId(),
+            erstterminID: ersterTerminID,
             ort: req.body.ort,
             datum: req.body.datum,
             mannschafts_ID: req.body.mannschafts_ID,
             enddatum: req.body.enddatum,
-            ist_wiederholend: req.body.ist_wiederholend,
-            gegner: req.body.gegner
+            gegner: req.body.gegner,
+            dauer: req.body.dauer
         });
-        termin.save()
+        wiederholungstermin.save()
             .then(result => {
                 console.log(result);
                 res.status(201).json({
@@ -61,8 +87,8 @@ exports.termin_get = (req, res, next) => {
                         datum: doc.datum,
                         mannschafts_ID: doc.mannschafts_ID,
                         enddatum: doc.enddatum,
-                        ist_wiederholend: doc.ist_wiederholend,
-                        gegner: doc.gegner
+                        gegner: doc.gegner,
+                        dauer: doc.dauer
                     };
                 })
             };
@@ -75,5 +101,3 @@ exports.termin_get = (req, res, next) => {
             });
         });
 };
-
-module.exports = router;
