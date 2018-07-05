@@ -81,7 +81,7 @@ exports.personen_login = (req, res, next) => {
             const token = jwt.sign(
               {
                 email: user[0].email,
-                userId: user[0]._id
+                userID: user[0]._id
               },
               "basldjgjsdfhgjksjdfösgjhslfhlj789er7t89eusdhvl",
               {

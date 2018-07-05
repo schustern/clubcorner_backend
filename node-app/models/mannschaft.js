@@ -10,10 +10,10 @@ const MannschaftSchema = new Schema(
         _id: Schema.Types.ObjectId,
         anmeldecode: {type: String, max: 100, required: true},
         jugend: {type: String, max: 100, required: true},
-        mannschaftsgrad: {type: int},
+        mannschaftsgrad: {type: Number},
         name: {type: String, max: 100, required: true},
         saison: {type: String, max: 100, required: true},
-        geschlecht: { type: boolean, required: true }
+        geschlecht: { type: Boolean, required: true }
     }
 );
 
