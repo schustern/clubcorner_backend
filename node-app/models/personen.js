@@ -8,16 +8,17 @@ const Schema = mongoose.Schema;
 const PersonenSchema = new Schema(
     {
         _id: Schema.Types.ObjectId,
-        vorname: {type: String, required: true, max: 100},
-        nachname: {type: String, required: true, max: 100},
-        password: {type: String, required: true, max: 100},
-        email: {type: String, 
-            required: true, 
+        vorname: { type: String, required: true, max: 100 },
+        nachname: { type: String, required: true, max: 100 },
+        password: { type: String, required: true, max: 100 },
+        email: {
+            type: String,
+            required: true,
             max: 100,
-            unique: true, 
+            unique: true,
             match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-    },
-    personenBild: { type: String }
+        },
+        personenBild: { type: String }
     }
 );
 

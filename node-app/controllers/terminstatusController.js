@@ -1,32 +1,32 @@
 const Terminstatus = require("../models/terminstatus");
 
 exports.terminstatus_update = (req, res, next) => {
-const id = req.params.appointmentstatusID;
-const updateOps = {};
-for (const ops of req.body) {
-  updateOps[ops.propName] = ops.value;
-}
-Terminstatus.update({ _id: id }, { $set: updateOps })
-.exec()
-.then(result => {
-    res.status(200).json({
+  const id = req.params.appointmentstatusID;
+  const updateOps = {};
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value;
+  }
+  Terminstatus.update({ _id: id }, { $set: updateOps })
+    .exec()
+    .then(result => {
+      res.status(200).json({
         message: "Terminstatus updated"
+      })
     })
-})
-.catch(err => {
-    console.log(err);
-    res.status(500).json({
-      error: err
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
     });
-  });
 };
 
 exports.terminstatus_get = (req, res, next) => {
-    Terminstatus.find({ Termin_ID: req.params.appointmentID })
+  Terminstatus.find({ Termin_ID: req.params.appointmentID })
     .select("status personen_ID")
     .exec()
-.then(docs => {
-    const response = {
+    .then(docs => {
+      const response = {
         count: docs.length,
         products: docs.map(doc => {
           return {
@@ -34,13 +34,13 @@ exports.terminstatus_get = (req, res, next) => {
             personen_ID: doc.personen_ID
           };
         })
-      };    
-    res.status(200).json(response)
-})
-.catch(err => {
-    console.log(err);
-    res.status(500).json({
-      error: err
+      };
+      res.status(200).json(response)
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
     });
-  });
-    };
+};

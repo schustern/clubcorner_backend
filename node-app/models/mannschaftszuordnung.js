@@ -8,11 +8,11 @@ const Schema = mongoose.Schema;
 const MannschaftszuordnungSchema = new Schema(
     {
         _id: Schema.Types.ObjectId,
-        personen_ID: {type: Schema.Types.ObjectId, ref: 'Personen', required: true},
-        mannschafts_ID: {type: Schema.Types.ObjectId, ref: 'Mannschaft', required: true},
-        ist_Trainer: {type: Boolean, default: false}
+        personen_ID: { type: Schema.Types.ObjectId, ref: 'Personen', required: true },
+        mannschafts_ID: { type: Schema.Types.ObjectId, ref: 'Mannschaft', required: true },
+        ist_Trainer: { type: Boolean, default: false }
 
-     
+
     }
 );
 
