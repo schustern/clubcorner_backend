@@ -3,10 +3,10 @@ services:
   node:
     build: ./node-app
     ports:
-    - "3000:3001"
+    - "0.0.0.0:3001:3000"
     links:
     - mongo
   mongo:
     image: mongo
     ports: 
-    - "27017:27018"
+    - "0.0.0.0:27018:27017"

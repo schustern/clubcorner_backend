@@ -27,7 +27,7 @@ app.use((req, res, next) => {
   next();
 });
 
-var mongoDB = 'mongodb://127.0.0.1:27018';
+var mongoDB = 'mongodb://mongo:27017';
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
