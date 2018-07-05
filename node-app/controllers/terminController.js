@@ -7,7 +7,7 @@ exports.create = (req, res, next) => {
     //Falls wiederholend findet der Termin alle 7 Tage erneut statt
     var times = 0;
     if (req.body.ist_wiederholend) {
-        const span = req.body.enddatum.now() - req.body.datum.now();
+        const span = req.body.enddatum.map - req.body.datum.now();
         times = span / 604800000;
     }
     const timesRounded = Math.floor(times);
@@ -41,7 +41,7 @@ exports.create = (req, res, next) => {
             _id: new mongoose.Types.ObjectId(),
             erstterminID: ersterTerminID,
             ort: req.body.ort,
-            datum: req.body.datum,
+            datum: new Date(req.body.datum.now() + ( i + 1 ) * 604800000),
             mannschafts_ID: req.body.mannschafts_ID,
             enddatum: req.body.enddatum,
             gegner: req.body.gegner,
@@ -51,7 +51,7 @@ exports.create = (req, res, next) => {
             .then(result => {
                 console.log(result);
                 res.status(201).json({
-                    message: "User created"
+                    message: (i + 1 ).toString + ": Termin created"
                 });
             })
             .catch(err => {
