@@ -76,7 +76,7 @@ exports.personen_update_password = (req, res, next) => {
 };
 
 exports.personen_update_picture = (req, res, next) => {
-  Personen.update({ _id: req.params.userID }, { personenBild: req.body.personenBild })
+  Personen.update({ _id: req.params.userID }, { personenBild: req.file.path })
   .exec()
   .then(result => {
     res.status(200).json({
