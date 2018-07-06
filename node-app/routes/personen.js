@@ -37,12 +37,13 @@ router.get("/:userID", checkAuth, personenController.personen_get);
 
 router.patch("/update/:userID", checkAuth, personenController.personen_update);
 
-router.patch("/update_picture/:userID", checkAuth, personenController.personen_update_picture);
+router.patch("/update_password/:userID", checkAuth, personenController.personen_update_password);
+
+router.patch("/update_picture/:userID", upload.single('personenBild'), checkAuth, personenController.personen_update_picture);
 
 router.post("/login", personenController.personen_login);
 
 router.post("/signup", personenController.personen_signup);
-//router.post("/signup", upload.single('personenBild'), personenController.personen_signup);
 
 router.delete("/:userID", checkAuth, personenController.personen_delete);
 

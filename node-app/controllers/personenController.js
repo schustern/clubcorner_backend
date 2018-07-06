@@ -26,13 +26,17 @@ exports.personen_get = (req, res, next) => {
 };
 
 exports.personen_update = (req, res, next) => {
+  //TODO: Überprüfung ob geänderte mail bereits existiert 
+  
  const updateOps = {};
-  for (const ops of req.body) {
+  for (var ops of req.body) {
     updateOps[ops.propName] = ops.value;
   }
-  Product.update({ _id: req.params.userID }, { $set: updateOps })
+  console.log("11");
+  Personen.update({ _id: req.params.userID }, { $set: updateOps })
     .exec()
     .then(result => {
+      console.log(result);
       res.status(200).json({
         message: "Person updated"
       });
@@ -45,9 +49,34 @@ exports.personen_update = (req, res, next) => {
     });
 };
 
-exports.personen_update_picture = (req, res, next) => {
+exports.personen_update_password = (req, res, next) => {
+  //TODO: Überprüfung ob geänderte mail bereits existiert 
+  
+  bcrypt.hash(req.body.password, 10, (err, hash) => {
+    if (err) {
+      return res.status(500).json({
+        error: err
+      });
+    } else {
+  Personen.update({ _id: req.params.userID }, { password: hash })
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: "Person password updated"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    })
+}
+})
+};
 
-  Product.update({ _id: req.params.userID }, { personenBild: req.body.personenBild })
+exports.personen_update_picture = (req, res, next) => {
+  Personen.update({ _id: req.params.userID }, { personenBild: req.body.personenBild })
   .exec()
   .then(result => {
     res.status(200).json({
@@ -79,29 +108,7 @@ exports.personen_signup = (req, res, next) => {
               error: err
             });
           } else {
-            var user = null;
-
-            //Falls eine Bild-Datei dabei ist
-            // if (req.file != null) {
-            //   user = new Personen({
-            //     _id: new mongoose.Types.ObjectId(),
-            //     vorname: req.body.vorname,
-            //     nachname: req.body.nachname,
-            //     email: req.body.email,
-            //     password: hash,
-            //     personenBild: req.file.path
-            //   });
-            // } else {
-            //   user = new Personen({
-            //     _id: new mongoose.Types.ObjectId(),
-            //     vorname: req.body.vorname,
-            //     nachname: req.body.nachname,
-            //     email: req.body.email,
-            //     password: hash
-            //   });
-            // };
-
-            user = new Personen({
+            const user = new Personen({
               _id: new mongoose.Types.ObjectId(),
               vorname: req.body.vorname,
               nachname: req.body.nachname,
