@@ -5,7 +5,62 @@ const jwt = require("jsonwebtoken");
 
 
 exports.personen_get = (req, res, next) => {
-  Personen.find()
+  Personen.findById( req.params.userID )
+  .select("vorname nachname email personenBild").exec()
+  .then(doc => {
+    console.log("From database", doc);
+    if (doc) {
+      res.status(200).json({
+        person: doc
+      });
+    } else {
+      res
+        .status(404)
+        .json({ message: "No valid Person found for provided UserID" });
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({ error: err });
+  });
+};
+
+exports.personen_update = (req, res, next) => {
+ const updateOps = {};
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value;
+  }
+  Product.update({ _id: req.params.userID }, { $set: updateOps })
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: "Person updated"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+exports.personen_update_picture = (req, res, next) => {
+
+  Product.update({ _id: req.params.userID }, { personenBild: req.body.personenBild })
+  .exec()
+  .then(result => {
+    res.status(200).json({
+      message: "PersonenBild updated"
+    });
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({
+      error: err
+    });
+  });
+
 };
 
 exports.personen_signup = (req, res, next) => {

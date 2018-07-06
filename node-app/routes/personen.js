@@ -31,8 +31,13 @@ const upload = multer({
   fileFilter: fileFilter
 });
 
-router.get("/", personenController.personen_get);
-//router.get("/:personenId", personenController.personen_get_person);
+
+
+router.get("/:userID", checkAuth, personenController.personen_get);
+
+router.patch("/update/:userID", checkAuth, personenController.personen_update);
+
+router.patch("/update_picture/:userID", checkAuth, personenController.personen_update_picture);
 
 router.post("/login", personenController.personen_login);
 
