@@ -4,6 +4,20 @@ const checkAuth = require('../middleware/check-auth');
 
 const mannschaftController = require('../controllers/mannschaftController');
 
-//router.post("/create", mannschaftController.create_team);
+
+
+router.get("/:mannschaftsID",checkAuth, mannschaftController.getMannschaftbyID);
+
+
+router.post("/create",checkAuth, mannschaftController.mannschaft_create);
+
+
+router.delete("/:mannschaftsID", checkAuth, mannschaftController.mannschaft_delete);
+
 
 module.exports = router;
+
+
+
+
+
