@@ -11,6 +11,8 @@ const terminRoutes = require('./routes/termin');
 const terminstatusRoutes = require('./routes/terminstatus');
 
 const app = express();
+app.use(morgan("dev"));
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -21,7 +23,7 @@ app.use((req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   if (req.method === "OPTIONS") {
-    res.header("Access-Control-Allow-Methods", "PUT, POST, DELETE, GET");
+    res.header("Access-Control-Allow-Methods", "PATCH, POST, DELETE, GET");
     return res.status(200).json({});
   }
   next();
@@ -37,11 +39,12 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// Routes 
 app.use('/personen', personenRoutes);
 app.use('/mannschaft', mannschaftRoutes);
 app.use('/mannschaftzuordnung', mannschaftzuordnungRoutes);
@@ -51,18 +54,18 @@ app.use('/terminstatus', terminstatusRoutes);
 
 
 app.use((req, res, next) => {
-    const error = new Error("Not found");
-    error.status = 404;
-    next(error);
+  const error = new Error("Not found");
+  error.status = 404;
+  next(error);
+});
+
+app.use((error, req, res, next) => {
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message
+    }
   });
-  
-  app.use((error, req, res, next) => {
-    res.status(error.status || 500);
-    res.json({
-      error: {
-        message: error.message
-      }
-    });
-  });
+});
 
 module.exports = app;

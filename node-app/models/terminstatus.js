@@ -8,9 +8,10 @@ const Schema = mongoose.Schema;
 const TerminstatusSchema = new Schema(
     {
         _id: Schema.Types.ObjectId,
-        personen_ID: {type: Schema.Types.ObjectId, ref: 'Personen', required: true},
-        Termin_ID: {type: Schema.Types.ObjectId, ref: 'Termine', required: true},
-        status: {type: int, default: 0}
+        personen_ID: { type: Schema.Types.ObjectId, ref: 'Personen', required: true },
+        Termin_ID: { type: Schema.Types.ObjectId, ref: 'Termine', required: true },
+        datum: { type: Date, required: true },
+        status: { type: Number, default: 0 }
     }
 );
 

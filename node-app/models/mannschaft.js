@@ -8,11 +8,12 @@ const Schema = mongoose.Schema;
 const MannschaftSchema = new Schema(
     {
         _id: Schema.Types.ObjectId,
-        anmeldecode: {type: String, max: 100, required: true},
-        jugend: {type: String, max: 100, required: true},
-        mannschaftsgrad: {type: int},
-        name: {type: String, max: 100, required: true},
-        saison: {type: String, max: 100, required: true},
+        anmeldecode: { type: String, max: 100, required: true },
+        jugend: { type: String, max: 100, required: true },
+        mannschaftsgrad: { type: Number },
+        name: { type: String, max: 100, required: true },
+        saison: { type: String, max: 100, required: true },
+        geschlecht: { type: Boolean, required: true }
     }
 );
 
