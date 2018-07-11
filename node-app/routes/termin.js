@@ -14,6 +14,7 @@ router.delete("/:appointmentID", checkAuth, terminController.termin_delete);
 router.delete("/delete_all/:appointmentID", checkAuth, terminController.termin_delete_all);
 
 router.patch("/:appointmentID", checkAuth, terminController.termin_update);
+//Ändert nur den gerade ausgewählten Termin
 
 //hole alle Termin Objekte und das zum Nutzer passende terminstatusobjekt
 router.get("/:teamID", checkAuth, terminController.termin_get);

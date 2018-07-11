@@ -35,9 +35,12 @@ const upload = multer({
 
 router.get("/:userID", checkAuth, personenController.personen_get);
 
+
+//Passwort und mail sind nicht änderbar
 router.patch("/update/:userID", checkAuth, personenController.personen_update);
 
-router.patch("/update_password/:userID", checkAuth, personenController.personen_update_password);
+
+//router.patch("/update_password/:userID", checkAuth, personenController.personen_update_password);
 
 router.patch("/update_picture/:userID", upload.single('personenBild'), checkAuth, personenController.personen_update_picture);
 

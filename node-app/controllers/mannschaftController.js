@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Mannschaft = require("../models/mannschaft");
 
-//geschlecht fehlt
 
 //exports.mannschaft_getbyID = (req, res, next) => {
 //    res.status(200).json({
@@ -18,16 +17,30 @@ exports.mannschaft_create = (req, res, next) => {
             message: "Mannschaft exists"
         });
     } else {
+        const randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+        const uniqid = randLetter + Date.now();
+
                 const mannschaft = new Mannschaften({
                     mannschafts_ID: new mongoose.Types.ObjectId(),
-                    anmeldecode: Math.random().toString(36).substring(2,9),    //9-Stelliger Random Code aus Zahlen und Buchstaben
+                    anmeldecode: uniqid,
                     jugend: req.body.jugend,
                     mannschaftsgrad: req.body.mannschaftsgrad,
                     name:  req.body.jugend + " " + req.body.mannschaftsgrad + " " + req.body.saison ,
-                    saison: req.body.saison
+                    saison: req.body.saison,
+                    male: req.body.male
                 });
         mannschaft
             .save()
+
+            const mannschaftzuordnung = new Mannschaftzuordnung({
+                _id: new mongoose.Types.ObjectId(),
+                personen_ID: req.params.userID,
+                mannschafts_ID: mannschaft._id,
+                ist_Trainer: true,
+                mannschafts_name: mannschaft.name
+            });
+            mannschaftzuordnung.save()
+
             .then(result => {
             console.log(result);
         res.status(201).json({
@@ -60,7 +73,6 @@ exports.mannschaft_delete = (req, res, next) => {
 });
 };
 
-
 exports.getMannschaftbyID = (req, res, next) => {
     Mannschaft.find({ mannschafts_ID: req.params.teamID })
         .exec()
@@ -86,7 +98,7 @@ exports.getMannschaftbyID = (req, res, next) => {
         error: err
     });
 });
-                                                }
+};
 
 
 

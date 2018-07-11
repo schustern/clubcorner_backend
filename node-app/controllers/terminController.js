@@ -11,7 +11,7 @@ exports.create = (req, res, next) => {
         times = span / 604800000;
     }
     const timesRounded = Math.floor(times);
-    var termin = new Termin({
+    const termin = new Termin({
         _id: new mongoose.Types.ObjectId(),
         ort: req.body.ort,
         datum: req.body.datum,
@@ -33,6 +33,8 @@ exports.create = (req, res, next) => {
                 error: err
             });
         });
+
+
 
     //Falls ein wiederholender Termin vorliegt
     const ersterTerminID = termin._id.toString();
@@ -60,19 +62,63 @@ exports.create = (req, res, next) => {
                     error: err
                 });
             });
+            //create terminstatus
     }
 };
 
 exports.termin_delete = (req, res, next) => {
-    //delete TerminID
+    Termin.remove({ _id: req.params.termin })
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: "User deleted"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
 };
 
 exports.termin_delete_all = (req, res, next) => {
-    //delete TerminID und erstTerminID
+    Personen.remove({ _id: req.params.userId })
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: "User deleted"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
 };
 
 exports.termin_update = (req, res, next) => {
-};
+    const updateOps = {};
+    for (var ops of req.body) {
+      updateOps[ops.propName] = ops.value;
+    }
+    console.log("11");
+    Termin.update({ _id: req.params.userID }, { $set: updateOps })
+      .exec()
+      .then(result => {
+        console.log(result);
+        res.status(200).json({
+          message: "Termin updated"
+        }); 
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
+      });
+  };
 
 exports.termin_get = (req, res, next) => {
     Termin.find({ mannschafts_ID: req.params.teamID })

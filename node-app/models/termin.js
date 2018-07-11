@@ -18,5 +18,4 @@ const TermineSchema = new Schema(
     }
 );
 
-//Export model
 module.exports = mongoose.model('Termine', TermineSchema);

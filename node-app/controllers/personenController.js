@@ -49,31 +49,31 @@ exports.personen_update = (req, res, next) => {
     });
 };
 
-exports.personen_update_password = (req, res, next) => {
-  //TODO: Überprüfung ob geänderte mail bereits existiert 
+// exports.personen_update_password = (req, res, next) => {
+//   //TODO
   
-  bcrypt.hash(req.body.password, 10, (err, hash) => {
-    if (err) {
-      return res.status(500).json({
-        error: err
-      });
-    } else {
-  Personen.update({ _id: req.params.userID }, { password: hash })
-    .exec()
-    .then(result => {
-      res.status(200).json({
-        message: "Person password updated"
-      });
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-    })
-}
-})
-};
+//   bcrypt.hash(req.body.password, 10, (err, hash) => {
+//     if (err) {
+//       return res.status(500).json({
+//         error: err
+//       });
+//     } else {
+//   Personen.update({ _id: req.params.userID }, { password: hash })
+//     .exec()
+//     .then(result => {
+//       res.status(200).json({
+//         message: "Person password updated"
+//       });
+//     })
+//     .catch(err => {
+//       console.log(err);
+//       res.status(500).json({
+//         error: err
+//       });
+//     })
+// }
+// })
+// };
 
 exports.personen_update_picture = (req, res, next) => {
   Personen.update({ _id: req.params.userID }, { personenBild: req.file.path })
@@ -180,7 +180,7 @@ exports.personen_login = (req, res, next) => {
 
 
 exports.personen_delete = (req, res, next) => {
-  Personen.remove({ _id: req.params.userId })
+  Personen.remove({ _id: req.params.userID })
     .exec()
     .then(result => {
       res.status(200).json({

@@ -8,6 +8,6 @@ router.get("/team/:userID",checkAuth, mannschaftzuordnungController.getMannschaf
 
 router.get("/players/:teamID",checkAuth, mannschaftzuordnungController.getSpielerByZuordnung);
 
-//update Methode, die über _id sucht
+router.delete("/:teamID/:userID",checkAuth, mannschaftzuordnungController.deleteSpielerFromTeam);
 
 module.exports = router;

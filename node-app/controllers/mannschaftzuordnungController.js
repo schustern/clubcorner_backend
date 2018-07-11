@@ -4,12 +4,11 @@ const Mannschaft = require("../models/mannschaft");
 
 exports.getMannschaftByZuordnung = (req, res, next) => {
     Mannschaftzuordnung.find({ personen_ID: req.params.userID })
-        .select("mannschafts_ID ist_Trainer")
+        .select("mannschafts_ID mannschafts_name ist_Trainer")
         .exec()
         .then(docs => {
             console.log(docs);
             if (docs.length == 0) {
-                console.log("ja");
                 //Code Generator
                 const randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
                 const uniqid = randLetter + Date.now();
@@ -40,7 +39,8 @@ exports.getMannschaftByZuordnung = (req, res, next) => {
                 mannschaftzuordnungen: docs.map(doc => {
                     return {
                         mannschafts_ID: doc.mannschafts_ID,
-                        mannschafts_name: doc.mannschafts_name
+                        mannschafts_name: doc.mannschafts_name,
+                        ist_Trainer: doc.ist_Trainer
                     };
                 })
             };
@@ -55,5 +55,39 @@ exports.getMannschaftByZuordnung = (req, res, next) => {
 };
 
 exports.getSpielerByZuordnung = (req, res, next) => {
+    Mannschaftzuordnung.find({ mannschafts_ID: req.params.teamID, personen_ID: req.params.userID })
+    .select("personen_ID")
+    .exec()
+    .then(docs => {
+        const response = {
+            mannschaftzuordnungen: docs.map(doc => {
+                return {
+                    personen_ID: doc.personen_ID
+                };
+            })
+        };
+        res.status(200).json(response)
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+};
 
+exports.deleteSpielerFromTeam = (req, res, next) => {
+    Mannschaftzuordnung.remove({ personen_ID: req.params.userID, mannschafts_ID: req.params.teamID})
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: "Spieler aus Team entfernt"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
 }
