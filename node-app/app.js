@@ -29,7 +29,7 @@ app.use((req, res, next) => {
   next();
 });
 
-var mongoDB = 'mongodb://mongo:27017';
+var mongoDB = 'mongodb://localhost:27017';
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
@@ -54,7 +54,7 @@ app.use('/terminstatus', terminstatusRoutes);
 
 
 app.use((req, res, next) => {
-  const error = new Error("Not found");
+  const error = new Error("Route Not found");
   error.status = 404;
   next(error);
 });

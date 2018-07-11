@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Mannschaft = require("../models/mannschaft");
 
+//geschlecht fehlt
 
 //exports.mannschaft_getbyID = (req, res, next) => {
 //    res.status(200).json({
@@ -22,7 +23,7 @@ exports.mannschaft_create = (req, res, next) => {
                     anmeldecode: Math.random().toString(36).substring(2,9),    //9-Stelliger Random Code aus Zahlen und Buchstaben
                     jugend: req.body.jugend,
                     mannschaftsgrad: req.body.mannschaftsgrad,
-                    name:  req.body.jugend + req.body.mannschaftsgrad + req.body.saison ,
+                    name:  req.body.jugend + " " + req.body.mannschaftsgrad + " " + req.body.saison ,
                     saison: req.body.saison
                 });
         mannschaft
@@ -41,9 +42,7 @@ exports.mannschaft_create = (req, res, next) => {
     });
     }
     });
-    }
-});
-};
+    };
 
 exports.mannschaft_delete = (req, res, next) => {
     Mannschaften.remove({ _id: req.params.mannschafts_ID })
@@ -70,11 +69,12 @@ exports.getMannschaftbyID = (req, res, next) => {
             Mannschaften: docs.map(doc => {
                 return {
                     anmeldecode: doc.anmeldecode,
-                    mannschafts_ID: doc.mannschafts_ID,
+                    _id: doc._id,
                     name: doc.name,
                     jugend: doc.jugend,
                     mannschaftsgrad: doc.mannschaftsgrad,
-                    saison: doc.saison
+                    saison: doc.saison,
+                    male: doc.male
                 };
 })
 };

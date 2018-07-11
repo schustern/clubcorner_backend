@@ -34,14 +34,14 @@ exports.create = (req, res, next) => {
             });
         });
 
-        //Falls ein wiederholender Termin vorliegt
-        const ersterTerminID = termin._id.toString();
+    //Falls ein wiederholender Termin vorliegt
+    const ersterTerminID = termin._id.toString();
     for (var i = 0; i < timesRounded; i++) {
         var wiederholungstermin = new Termin({
             _id: new mongoose.Types.ObjectId(),
             erstterminID: ersterTerminID,
             ort: req.body.ort,
-            datum: new Date(req.body.datum.now() + ( i + 1 ) * 604800000),
+            datum: new Date(req.body.datum.now() + (i + 1) * 604800000),
             mannschafts_ID: req.body.mannschafts_ID,
             enddatum: req.body.enddatum,
             gegner: req.body.gegner,
@@ -51,7 +51,7 @@ exports.create = (req, res, next) => {
             .then(result => {
                 console.log(result);
                 res.status(201).json({
-                    message: (i + 1 ).toString + ": Termin created"
+                    message: (i + 1).toString + ": Termin created"
                 });
             })
             .catch(err => {
@@ -64,11 +64,11 @@ exports.create = (req, res, next) => {
 };
 
 exports.termin_delete = (req, res, next) => {
-
+    //delete TerminID
 };
 
 exports.termin_delete_all = (req, res, next) => {
-
+    //delete TerminID und erstTerminID
 };
 
 exports.termin_update = (req, res, next) => {
@@ -82,7 +82,7 @@ exports.termin_get = (req, res, next) => {
             const response = {
                 termine: docs.map(doc => {
                     return {
-                        _id: new mongoose.Types.ObjectId(),
+                        _id: doc._id,
                         ort: doc.ort,
                         datum: doc.datum,
                         mannschafts_ID: doc.mannschafts_ID,
