@@ -11,7 +11,7 @@ router.post("/:teamID", checkAuth, terminController.create);
 router.delete("/:appointmentID", checkAuth, terminController.termin_delete);
 
 //Löscht ebenfalls für jedes (verbleibende) Teammitglied das zugehörige terminStatus Objekt
-router.delete("/delete_all/:appointmentID", checkAuth, terminController.termin_delete_all);
+router.delete("/delete_all/:firstAppointmentID", checkAuth, terminController.termin_delete_all);
 
 router.patch("/:appointmentID", checkAuth, terminController.termin_update);
 //Ändert nur den gerade ausgewählten Termin

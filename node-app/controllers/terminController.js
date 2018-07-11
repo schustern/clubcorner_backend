@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
 const Termin = require("../models/termin");
 const Terminstatus = require("../models/terminstatus");
+const Mannschaftzuordnung = require("../models/mannschaftszuordnung");
+
 
 exports.create = (req, res, next) => {
 
-    //Falls wiederholend findet der Termin alle 7 Tage erneut statt
+    //Falls Enddatum mitgegeben wurde findet der Termin alle 7 Tage erneut statt
     var times = 0;
-    if (req.body.ist_wiederholend) {
+    if (req.body.enddatum != "") {
         const span = req.body.enddatum.map - req.body.datum.now();
         times = span / 604800000;
     }
@@ -34,14 +36,41 @@ exports.create = (req, res, next) => {
             });
         });
 
+        //Für jedes Teammitglied ein Terminstatus-Objekt erzeugen
+        const mannschaftMitglieder;
+        const mannschaftLength;
 
+Mannschaftzuordnung.find({ mannschafts_ID: termin.mannschafts_ID})
+.select("personen_ID")
+.exec
+.then(docs => {
+    mannschaftMitglieder = docs;
 
-    //Falls ein wiederholender Termin vorliegt
-    const ersterTerminID = termin._id.toString();
+    mannschaftLength = mannschaftMitglieder.length;
+    for (var i = 0; i < mannschaftLength; i++){
+        const terminstatus = new Terminstatus({
+            _id: new mongoose.Types.ObjectId(),
+            personen_ID: mannschaftMitglieder[i].personen_ID,
+            Termin_ID: termin._id
+        });
+        terminstatus.save()
+            .then(result => {
+                console.log(result);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            })
+        }});
+
+    //Falls ein sich wiederholender Termin vorliegt
+    const ersterTermin_ID = termin._id.toString();
     for (var i = 0; i < timesRounded; i++) {
         var wiederholungstermin = new Termin({
             _id: new mongoose.Types.ObjectId(),
-            erstterminID: ersterTerminID,
+            ersttermin_ID: ersterTermin_ID,
             ort: req.body.ort,
             datum: new Date(req.body.datum.now() + (i + 1) * 604800000),
             mannschafts_ID: req.body.mannschafts_ID,
@@ -62,16 +91,40 @@ exports.create = (req, res, next) => {
                     error: err
                 });
             });
-            //create terminstatus
+           
+             //Für jedes Teammitglied ein Terminstatus-Objekt erzeugen
+
+             for (var i = 0; i < mannschaftLength; i++){
+                const terminstatus = new Terminstatus({
+                    _id: new mongoose.Types.ObjectId(),
+                    personen_ID: mannschaftMitglieder[i].personen_ID,
+                    Termin_ID: wiederholungstermin._id,
+                    ersttermin_ID: wiederholungstermin.ersttermin_ID
+                });
+                terminstatus.save()
+                    .then(result => {
+                        console.log(result);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            error: err
+                        });
+                    })
+                }
     }
 };
 
 exports.termin_delete = (req, res, next) => {
-    Termin.remove({ _id: req.params.termin })
+    Termin.remove({ _id: req.params.appointmentID})
     .exec()
-    .then(result => {
+    then(result => {
+        Terminstatus.remove({Termin_ID: req.params.appointmentID})
+        .exec
+        .then(result => {
+        })
       res.status(200).json({
-        message: "User deleted"
+        message: "Termin and Terminstatus for all Personen deleted"
       });
     })
     .catch(err => {
@@ -83,11 +136,15 @@ exports.termin_delete = (req, res, next) => {
 };
 
 exports.termin_delete_all = (req, res, next) => {
-    Personen.remove({ _id: req.params.userId })
+    Termin.remove({ ersttermin_ID: req.params.firstAppointmentID })
     .exec()
     .then(result => {
-      res.status(200).json({
-        message: "User deleted"
+        Terminstatus.remove({ersttermin_ID: req.params.firstAppointmentID })
+        .exec()
+        .then(result => {
+            res.status(200).json({
+                message: "All consecutive Termin and Terminstatus for all Personen deleted"
+        })
       });
     })
     .catch(err => {
@@ -103,7 +160,6 @@ exports.termin_update = (req, res, next) => {
     for (var ops of req.body) {
       updateOps[ops.propName] = ops.value;
     }
-    console.log("11");
     Termin.update({ _id: req.params.userID }, { $set: updateOps })
       .exec()
       .then(result => {
@@ -122,7 +178,7 @@ exports.termin_update = (req, res, next) => {
 
 exports.termin_get = (req, res, next) => {
     Termin.find({ mannschafts_ID: req.params.teamID })
-        .select("_id erstterminID ort datum enddatum mannschafts_ID ist_wiederholend gegner")
+        .select("_id ersttermin_ID ort datum enddatum mannschafts_ID ist_wiederholend gegner")
         .exec()
         .then(docs => {
             const response = {

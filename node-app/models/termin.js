@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 const TermineSchema = new Schema(
     {
         _id: Schema.Types.ObjectId,
-        erstterminID: { type: String, default: "" },
+        ersttermin_ID: { type: String, default: "" },
         ort: { type: String, max: 100, required: true },
         datum: { type: Date, required: true },
         enddatum: { type: Date, default: "" },

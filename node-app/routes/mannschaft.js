@@ -9,10 +9,11 @@ const mannschaftController = require('../controllers/mannschaftController');
 router.get("/:mannschaftsID",checkAuth, mannschaftController.getMannschaftbyID);
 
 
-router.post("/create",checkAuth, mannschaftController.mannschaft_create);
+router.post("/create/:userID",checkAuth, mannschaftController.mannschaft_create);
 
 
 router.delete("/:mannschaftsID", checkAuth, mannschaftController.mannschaft_delete);
+
 
 
 module.exports = router;
