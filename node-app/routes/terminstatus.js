@@ -6,6 +6,6 @@ const terminstatusController = require('../controllers/terminstatusController');
 
 router.patch("/:appointmentstatusID", checkAuth, terminstatusController.terminstatus_update);
 
-router.get("/:appointmentID", checkAuth, terminstatusController.terminstatus_update);
+router.get("/:appointmentID", checkAuth, terminstatusController.terminstatus_get);
 
 module.exports = router;

@@ -12,7 +12,7 @@ const TermineSchema = new Schema(
         ort: { type: String, max: 100, required: true },
         datum: { type: Date, required: true },
         enddatum: { type: Date, default: "" },
-        mannschafts_ID: { type: Number, required: true },
+        mannschafts_ID: { type: String, required: true },
         gegner: { type: String, max: 100, default: "" },
         dauer: { type: Number, required: true }
     }

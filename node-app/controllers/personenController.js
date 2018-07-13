@@ -180,6 +180,8 @@ exports.personen_login = (req, res, next) => {
 
 
 exports.personen_delete = (req, res, next) => {
+  // "Cannot use (or request) retryable writes with limit=0"  -> 
+//ersetze Product.remove({ _id: id }) with Product.findByIdAndRemove(id)
   Personen.remove({ _id: req.params.userID })
     .exec()
     .then(result => {

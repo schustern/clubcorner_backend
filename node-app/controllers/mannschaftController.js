@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Mannschaft = require("../models/mannschaft");
-
+const Mannschaftzuordnung = require("../models/mannschaftszuordnung");
 
 //exports.mannschaft_getbyID = (req, res, next) => {
 //    res.status(200).json({
@@ -14,13 +14,13 @@ exports.mannschaft_create = (req, res, next) => {
         .then(mannschaft => {
             if (mannschaft.length >= 1) {
                 return res.status(409).json({
-                    message: "Mannschaft already exists"
+                    message: "Mannschaft with that name already exists"
                 });
             } else {
                 const randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
                 const uniqid = randLetter + Date.now();
 
-                const mannschaft = new Mannschaften({
+                const mannschaft = new Mannschaft({
                     _id: new mongoose.Types.ObjectId(),
                     anmeldecode: uniqid,
                     jugend: req.body.jugend,
@@ -29,23 +29,22 @@ exports.mannschaft_create = (req, res, next) => {
                     saison: req.body.saison,
                     male: req.body.male
                 });
-                mannschaft
-                    .save()
-
-                const mannschaftzuordnung = new Mannschaftzuordnung({
-                    _id: new mongoose.Types.ObjectId(),
-                    personen_ID: req.params.userID,
-                    mannschafts_ID: mannschaft._id,
-                    ist_Trainer: true,
-                    mannschafts_name: mannschaft.name
-                });
-                mannschaftzuordnung.save()
-
+                mannschaft.save()
                     .then(result => {
-                        console.log(result);
-                        res.status(201).json({
-                            message: "Mannschaft created"
+                        const mannschaftzuordnung = new Mannschaftzuordnung({
+                            _id: new mongoose.Types.ObjectId(),
+                            personen_ID: req.params.userID,
+                            mannschafts_ID: mannschaft._id,
+                            ist_Trainer: true,
+                            mannschafts_name: mannschaft.name
                         });
+                        mannschaftzuordnung.save()
+                            .then(result => {
+                                console.log(result);
+                                res.status(201).json({
+                                    message: "Mannschaft created"
+                                });
+                            })
                     })
                     .catch(err => {
                         console.log(err);
@@ -58,7 +57,7 @@ exports.mannschaft_create = (req, res, next) => {
 };
 
 exports.mannschaft_delete = (req, res, next) => {
-    Mannschaften.remove({ _id: req.params.teamID })
+    Mannschaft.remove({ _id: req.params.teamID })
         .exec()
         .then(result => {
             Mannschaftzuordnung.remove({ mannschafts_ID: req.params.teamID })
@@ -78,7 +77,7 @@ exports.mannschaft_delete = (req, res, next) => {
 };
 
 exports.getMannschaftbyID = (req, res, next) => {
-    Mannschaft.find({ mannschafts_ID: req.params.teamID })
+    Mannschaft.find({ _id: req.params.teamID })
         .exec()
         .then(docs => {
             const response = {

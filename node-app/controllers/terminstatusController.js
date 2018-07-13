@@ -1,7 +1,7 @@
 const Terminstatus = require("../models/terminstatus");
 
 exports.terminstatus_update = (req, res, next) => {
-  Termin.update({ _id: req.params.appointmentID}, { status: req.body.status })
+  Terminstatus.update({ _id: req.params.appointmentID}, { status: req.body.status })
   .exec()
   .then(result => {
     console.log(result);
@@ -18,13 +18,13 @@ exports.terminstatus_update = (req, res, next) => {
 };
 
 exports.terminstatus_get = (req, res, next) => {
+  console.log("check");
   Terminstatus.find({ Termin_ID: req.params.appointmentID })
     .select("status personen_ID")
     .exec()
     .then(docs => {
       const response = {
-        count: docs.length,
-        products: docs.map(doc => {
+        terminstatuse: docs.map(doc => {
           return {
             status: doc.status,
             personen_ID: doc.personen_ID
