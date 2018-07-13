@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const Termin = require("../models/termin");
 const Terminstatus = require("../models/terminstatus");
 const Mannschaftzuordnung = require("../models/mannschaftszuordnung");
+async = require("async");
+
 
 
 exports.create = (req, res, next) => {
@@ -92,6 +94,7 @@ exports.create = (req, res, next) => {
 
 
         //Für jedes Teammitglied ein Terminstatus-Objekt erzeugen
+        //funktioniert noch nicht fehlerfrei. Bisher wird nur zum letzten Wiederholungstermin Terminstatuse erzeugt
         Mannschaftzuordnung.find({ mannschafts_ID: req.params.teamID })
             .select("personen_ID")
             .exec()
@@ -134,9 +137,9 @@ exports.create = (req, res, next) => {
 exports.termin_delete = (req, res, next) => {
     Termin.remove({ _id: req.params.appointmentID })
         .exec()
-    then(result => {
+    .then(result => {
         Terminstatus.remove({ Termin_ID: req.params.appointmentID })
-            .exec
+            .exec()
             .then(result => {
             })
         res.status(200).json({
