@@ -155,10 +155,7 @@ exports.personen_login = (req, res, next) => {
               email: user[0].email,
               userID: user[0]._id
             },
-            "basldjgjsdfhgjksjdfösgjhslfhlj789er7t89eusdhvl",
-            {
-              expiresIn: "1h"
-            }
+            "basldjgjsdfhgjksjdfösgjhslfhlj789er7t89eusdhvl"
           );
           return res.status(200).json({
             message: "Auth successful",
