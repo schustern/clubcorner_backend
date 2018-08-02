@@ -86,3 +86,8 @@ Die App basiert auf einem MEAN Stack, bestehend aus einer MongoDB Datenbank, Exp
 10. Verschlüsselung (Datenbankauthentifizierung)
 11. Logout (automatisch und manuell)
 12. Möglichkeit Termine zu- oder abzusagen
+
+## Lizenzen
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />Diese Dokumentation ist lizenziert unter <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
+Der Sourcecode und die Präsentation inklusive Video stehen unter [Apache License 2.0 ](https://www.apache.org/licenses/LICENSE-2.0)
