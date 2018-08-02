@@ -73,6 +73,47 @@ Außerdem können Spieler/Trainer Termine in der Übersicht auswählen, um sich 
 
 Die App basiert auf einem MEAN Stack, bestehend aus einer MongoDB Datenbank, Express, Ionic verbunden mit Cordova für das Frontend und NodeJS für die Backendfunktionalität. Es gibt 2 verschiedene Docker Container, einer für die Nodeapp und einer für Mongo. Das Frontend mit Ionic wird auf dem Client bereitgestellt. Der Login basiert auf JWT Webtokens und die gesamte Kommunkation von Front- und Backend läuft mihilfe von einer Rest-Schnittstelle ab. Die verschiedenen Dockercontainer können über docker-compose gestartet werden. 
 
+### Node.js
+Für die Laufzeitumgebung Node.js wurde npm als Paket-Manager verwendet.
+Die Bibliotheken inklusive einer kurzen Beschreibung der offiziellen Website die hierbei verwendet wurden, sind:
+1. HTTP: Interface zur Unterstützung und Sicherung des Internet-Protokolls. Insbesondere das Versenden von großen, verschlüsselten Nachrichten. 
+2. jwt: Bibliothek zur Erstellung und Überprüfung von validen JSON Web Tokens. Beispielswiese zum Senden von Verifizierungsdaten für die Validierung auf Backendseite. 
+3. bcrypt: Bibliothek, zur Ver- und Entschlüsselung von Passwörtern.
+4. Express: Werkzeug um robuste Routen für HTTP-Server zu erstellen.
+5. multer: Zwischenanwendung, welche das Absenden von Post-Anfragen ermöglicht. Dies wird primär für das Hochladen von Dateien verwendet.
+6. path: Ein Modul welches es ermöglicht, mit Dateien und Dateiablagepfaden zu arbeiten.
+7. morgan: Zwischenanwendung, welche http-Anfragen protokolliert.
+8. body-parser: Zwischenanwendung, mithilfe derer eingehende Datenpakete in das geforderte Format übersetzt werden.
+9. mongoose: Ein Objekt-Modellierungswerkzeug für asynchrone Umgebungen.
+
+### Klassen
+
+Das Backend besitzt fünf verschiedene Klassen, welche alle nach jeweils drei unterschiedlichen Rollen unterteilt sind.
+Als Basis dienen hierbei die Models, welche Informationen über die Objekte beinhalten, die in der Datenbank gespeichert werden sollen. 
+Als nächstes kommen die Controller, welche die eigentliche Logik der Anwendung beinhalten. 
+Zuletzt kümmern sich die Routes um die http Abfragen, welche an die Controller weitergeleitet werden.
+Die Klassen unterteilen sich hierbei mit ihren Funktionen folgendermaßen:
+
+#### Personen
+Klasse zur Verwaltung der Anwender, mit welcher das Anmelden, Einloggen und Löschen eines Nutzers möglich ist. Des Weiteren können Nutzer-Informationen abgerufen und geändert, sowie ein Profilbild angelegt werden.
+
+#### Mannschaft
+Klasse zum Anlegen, Abrufen und Löschen von Mannschaften. Hierbei wird die Person automatisch als Mitglied hinzugefügt und erhält die Trainer Rolle, welche die Mannschaft erstellt.
+
+#### Mannschaftszuordnung
+Mithilfe dieser Klasse können unterschiedliche Aufgaben erledigt werden. Zum einen hier können Nutzer der Anwendung bestimmten Mannschaften hinzugefügt, oder aus diesen entfernt werden.
+Des Weiteren lassen sich aber auch anhand der NutzerID alle Mannschaften abrufen, in welchen sich dieser Nutzer befindet. Das gleiche gilt für die MannschaftsID, falls alle sich in dieser Mannschaft befindlichen Spieler abgerufen werden sollen.
+
+#### Termin	
+Hier können Termine für Mannschaften erstellt, abgerufen, verändert und gelöscht werden.
+
+Bei der Erstellung können Serientermine angelegt werden, indem ein Enddatum mitgegeben wird welches mindestens sieben Tage Abstand zum Anfangsdatum hat.
+Wird ein Termin entfernt kann dann ebenfalls angegeben werden, die gesamte Reihe mitzulöschen.
+
+#### Terminstatus
+Diese Klasse repräsentiert den jeweiligen Status eines Mannschaftsmitglieds bezüglich eines bestimmten Termins. Hier kann der Status, also ob das Mitglied Zu- oder Abgesagt hat, geändert und für eine Übersicht von allen Mitgliedern einer Mannschaft für einen bestimmten Termin abgerufen werden.
+
+
 ## Backlog
 1. Deep Links beim Anmeldecode nutzen
 2. Orte mittels Standort festlegen / Navigation
