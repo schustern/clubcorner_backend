@@ -76,15 +76,15 @@ Die App basiert auf einem MEAN Stack, bestehend aus einer MongoDB Datenbank, Exp
 ### Node.js
 Für die Laufzeitumgebung Node.js wurde npm als Paket-Manager verwendet.
 Die Bibliotheken inklusive einer kurzen Beschreibung der offiziellen Website die hierbei verwendet wurden, sind:
-1. HTTP: Interface zur Unterstützung und Sicherung des Internet-Protokolls. Insbesondere das Versenden von großen, verschlüsselten Nachrichten. 
-2. jwt: Bibliothek zur Erstellung und Überprüfung von validen JSON Web Tokens. Beispielswiese zum Senden von Verifizierungsdaten für die Validierung auf Backendseite. 
-3. bcrypt: Bibliothek, zur Ver- und Entschlüsselung von Passwörtern.
-4. Express: Werkzeug um robuste Routen für HTTP-Server zu erstellen.
-5. multer: Zwischenanwendung, welche das Absenden von Post-Anfragen ermöglicht. Dies wird primär für das Hochladen von Dateien verwendet.
-6. path: Ein Modul welches es ermöglicht, mit Dateien und Dateiablagepfaden zu arbeiten.
-7. morgan: Zwischenanwendung, welche http-Anfragen protokolliert.
-8. body-parser: Zwischenanwendung, mithilfe derer eingehende Datenpakete in das geforderte Format übersetzt werden.
-9. mongoose: Ein Objekt-Modellierungswerkzeug für asynchrone Umgebungen.
+- HTTP: Interface zur Unterstützung und Sicherung des Internet-Protokolls. Insbesondere das Versenden von großen, verschlüsselten Nachrichten. 
+- jwt: Bibliothek zur Erstellung und Überprüfung von validen JSON Web Tokens. Beispielswiese zum Senden von Verifizierungsdaten für die Validierung auf Backendseite. 
+- bcrypt: Bibliothek, zur Ver- und Entschlüsselung von Passwörtern.
+- Express: Werkzeug um robuste Routen für HTTP-Server zu erstellen.
+- multer: Zwischenanwendung, welche das Absenden von Post-Anfragen ermöglicht. Dies wird primär für das Hochladen von Dateien verwendet.
+- path: Ein Modul welches es ermöglicht, mit Dateien und Dateiablagepfaden zu arbeiten.
+- morgan: Zwischenanwendung, welche http-Anfragen protokolliert.
+- body-parser: Zwischenanwendung, mithilfe derer eingehende Datenpakete in das geforderte Format übersetzt werden.
+- mongoose: Ein Objekt-Modellierungswerkzeug für asynchrone Umgebungen.
 
 ### Klassen
 
